@@ -1,0 +1,52 @@
+
+#******************** Settings ************************
+
+*** Settings ***
+Documentation	Issue Test scenario. CRUD Operation: Create, Read, Update, Delete
+
+Pre Condition    User must be logged in and a project must be created.
+Post Condition   Issues are created, updated, and deleted as per test steps.
+Tags             Issue, CRUD, Positive
+
+#******************* Common Variables ********************
+
+
+*** Variables ***
+
+IssueUrl= https://gitlab.com/Kivirnina/test_1/-/issues/new
+Issue_nameUrl= https://gitlab.com/Kivirnina/test_1/-/issues/1
+Issue_name= Testi issue
+new_Issue_name= Testi nimi
+
+#******************** Test Cases *************************
+
+*** Test Case ***
+
+# Positive test
+
+	Create issue
+		Open browser IssueUrl
+		Input Issue_name
+		Click Button Create_issue
+		Page Should Contain Issue created just now by Nina Kivirasi
+
+ 	Update name of issue
+		Open browser Issue_nameUrl
+		Click Button Edit_button
+		Input new_Issue_name
+		Click Button Save_changes
+		Page Should Contain Nina Kivirasi changed title from Testi issue to Testi nimi just now
+
+	Create second issue with privious updated name
+		Open browser IssueUrl
+		Input new_Issue_name
+		Click Button Create_issue
+		Page Should Contain #2 · created just now by Nina Kivirasi
+
+    Delete first issue
+		Open browser Issue_nameUrl
+		Click link issue_actions
+		Click link delete_issue
+		Verify page Should Contain Issue will be removed! Are you sure?
+		Click Button deleteIssue_button
+		Page Should Contain The issue was successfully deleted.

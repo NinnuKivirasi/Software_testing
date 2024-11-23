@@ -1,0 +1,75 @@
+
+#******************** Settings ************************
+
+*** Settings ***
+
+Documentation	Project Test scenario. CRUD Operation: Create, Read, Update, Delete
+
+Pre Condition    Browser is installed, and the user is logged in.
+Post Condition   All operations complete; browser closed.
+Tags             CRUD, Positive, Negative
+
+#******************* Common Variables ********************
+
+*** Variables ***
+
+CreateProjectUrl= https://gitlab.com/projects/new
+NewBlank_projectUrl= https://gitlab.com/projects/new#blank_project
+NewCreate_templateUrl= https://gitlab.com/projects/new#create_from_template
+Main_page= https://gitlab.com/
+
+Group_name= Kivirnina
+Project_name= Test_1
+new_Project_name= Test_2
+
+#******************** Test Cases *************************
+
+*** Test Case ***
+
+# Positive Test
+
+Create blank project
+	Open browser NewBlank_projectUrl
+	Input Project_name
+	Check box Visibility_Level
+	Click Button CreateProject_button
+	Page Should Contain Project 'Project_name' was successfully created.
+
+Create template project
+	Open browser NewCreate_templateUrl
+	Click Button Use_template
+	Input Project_name
+	Check box Visibility_Level
+	Click Button CreateProject_button
+	wait Import in progress
+	Page Should Contain The project was successfully imported.
+
+Update name of template project
+	Open browser Main_page
+	Click link Project_name
+	Click link more_actions
+	Click link Project_settings
+	Clear Project_name
+	Input new_Project_name
+	Click Button SaveChanges_button
+	Page Should Contain Project 'Project_name' was successfully updated.
+
+Delete template project
+	Open browser Main_page
+	Click link Project_name¨
+	Click link more_actions
+	Click link Project_settings
+	Open Visibility_Projectfeatures_Permissions
+	Click Button DeleteProject_button
+	Page Should Contain Are you absolutely sure?
+	Input Group_name/Project_name
+	Click Button YesDeleteProject_button
+
+# Negative Test
+
+Create a blank project with the previous same name
+	Open browser NewBlank_projectUrl
+	Input Project_name
+	Check box Visibility_Level
+	Click Button CreateProject_button
+	Page Should Contain The form contains the following errors: Project namespace name has already been taken

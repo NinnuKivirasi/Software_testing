@@ -1,0 +1,78 @@
+
+#******************** Settings ************************
+
+*** Settings ***
+
+Documentation	User Registration Test scenario with verification, valid and invalid credentials.
+
+Precondition     Browser is installed and internet connection is active.
+Postcondition    User is redirected to the correct page or error message is displayed appropriately.
+Tags             Registration, Positive, Negative
+
+#******************* Common Variables ********************
+
+*** Variables ***
+
+# NOTE: Please Remove your login credential before uploading Assignments
+
+
+LoginUrl= https://gitlab.com/users/sign_up
+First_name= Nina
+Last_name= Kivirasi
+UserName= Kivirnina
+Email= nina.kivirasi@student.laurea.fi
+Password= *****
+Same_Username= Kivirnina
+Invalid_Email= nina.kivirasi@student.laurea...fi
+
+
+#******************** Test Cases *************************
+
+*** Test Case ***
+
+# Positive Test
+
+Register user with valid username and password 
+	Navigate To Login Page  LoginUrl
+    Input First_name First_name
+    Input Last_name Last_name
+	Input UserName UserName
+	Input Email Email
+	Input Password Password
+    Click Button continue_button
+    Verify Page Should ask verification
+	Input verification_code
+	Click Button next_button
+	Wait Until Page Contains    Welcome to GitLab
+
+# Negative Test
+
+Register user with same above username
+	Navigate To Login Page  LoginUrl
+    Input First_name First_name
+    Input Last_name Last_name
+	Input UserName Same_Username
+	Input Email Email
+	Input Password Password
+	Page Should Contain Username is already taken.
+
+Register user with empty password
+	Navigate To Login Page  LoginUrl
+    Input First_name First_name
+    Input Last_name Last_name
+	Input UserName UserName
+	Input Email Email
+	Input Password empty
+    Page Should Contain Minimum length is 8 characters.
+
+Register user with invalid email
+	Navigate To Login Page  LoginUrl
+    Input First_name First_name
+    Input Last_name Last_name
+	Input UserName Same_Username
+	Input Email Invalid_Email
+	Input Password Password
+    Page Should Contain Please provide a valid email address.
+
+
+
