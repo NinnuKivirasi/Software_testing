@@ -1,8 +1,3 @@
-
-# TODO
-
-> Please use the below questions as guidelines to help you think and plan your Learning Reflection Report
-
 ## 1. How was your experience testing the given Webapp?
 I’m not sure if I succeeded in the task as expected, because I had some understanding issues with it. I think it would have been more interesting to test an application that was more flawed.
      
